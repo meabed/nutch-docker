@@ -30,7 +30,7 @@ RUN cp /root/.ssh/id_rsa.pub /root/.ssh/authorized_keys
 
 
 # java
-RUN apt-get install -y openjdk-$JDK_VERSION-jre-headless
+RUN apt-get install -y openjdk-$JDK_VERSION-jdk
 #ant
 RUN apt-get install -y ant
 
