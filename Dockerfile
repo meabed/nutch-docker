@@ -30,9 +30,9 @@ RUN cp /root/.ssh/id_rsa.pub /root/.ssh/authorized_keys
 
 
 # java
-RUN apt-get install -y openjdk-$JDK_VERSION-jdk
+RUN apt-get install -y openjdk-$JDK_VERSION-jre-headless
 #ant
-RUN apt-get install -y ant maven
+RUN apt-get install -y ant
 
 ENV JAVA_HOME /usr/lib/jvm/java-$JDK_VERSION-openjdk-amd64
 ENV PATH $PATH:$JAVA_HOME/bin
