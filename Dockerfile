@@ -37,7 +37,6 @@ RUN cassandra_env="$CASSANDRA_NODE_NAME"_PORT_9160_TCP_ADDR
 RUN cassandra_ip=$(printenv $cassandra_env)
 
 RUN echo gora.datastore.default=org.apache.gora.cassandra.store.CassandraStore >> $NUTCH_ROOT/conf/gora.properties
-RUN echo gora.cassandrastore.servers=127.0.0.1:9160 >> $NUTCH_ROOT/conf/gora.properties
 
 ADD config/nutch-site.xml $NUTCH_ROOT/conf/nutch-site.xml
 
