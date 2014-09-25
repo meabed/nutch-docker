@@ -24,21 +24,7 @@ ENV NUTCH_ROOT /opt/apache-nutch-$NUTCH_VERSION
 ENV HOME /root
 
 #Nutch-default
-RUN sed -i '/^  <name>http.agent.name<\/name>$/{$!{N;s/^  <name>http.agent.name<\/name>\n  <value><\/value>$/  <name>http.agent.name<\/name>\n  <value>iData Bot<\/value>/;ty;P;D;:y}}' $NUTCH_ROOT/conf/nutch-default.xml
-
-RUN sed -i '/^  <name>http.robots.agents<\/name>$/{$!{N;s/^  <name>http.robots.agents<\/name>\n  <value><\/value>$/  <name>http.robots.agents<\/name>\n  <value>iData Bot<\/value>/;ty;P;D;:y}}' $NUTCH_ROOT/conf/nutch-default.xml
-
-RUN sed -i '/^  <name>http.agent.description<\/name>$/{$!{N;s/^  <name>http.agent.description<\/name>\n  <value><\/value>$/  <name>http.agent.description<\/name>\n  <value>iData Bot<\/value>/;ty;P;D;:y}}' $NUTCH_ROOT/conf/nutch-default.xml
-
-RUN sed -i '/^  <name>http.agent.version<\/name>$/{$!{N;s/^  <name>http.agent.version<\/name>\n  <value><\/value>$/  <name>http.agent.version<\/name>\n  <value>iData 0.0.1<\/value>/;ty;P;D;:y}}' $NUTCH_ROOT/conf/nutch-default.xml
-
-RUN sed -i '/^  <name>http.robots.agents<\/name>$/{$!{N;s/^  <name>http.robots.agents<\/name>\n  <value><\/value>$/  <name>http.robots.agents<\/name>\n  <value>iData Bot,*<\/value>/;ty;P;D;:y}}' $NUTCH_ROOT/conf/nutch-default.xml
-
-RUN sed -i '/^  <name>http.agent.url<\/name>$/{$!{N;s/^  <name>http.agent.url<\/name>\n  <value><\/value>$/  <name>http.agent.url<\/name>\n  <value>http:\/\/www.google.com<\/value>/;ty;P;D;:y}}' $NUTCH_ROOT/conf/nutch-default.xml
-
-RUN sed -i '/^  <name>http.agent.email<\/name>$/{$!{N;s/^  <name>http.agent.email<\/name>\n  <value><\/value>$/  <name>http.agent.email<\/name>\n  <value>mo.meabed@gmail.com<\/value>/;ty;P;D;:y}}' $NUTCH_ROOT/conf/nutch-default.xml
-
-RUN sed -i '/^  <name>storage.data.store.class<\/name>$/{$!{N;s/^  <name>storage.data.store.class<\/name>\n  <value>org.apache.gora.memory.store.MemStore<\/value>$/  <name>storage.data.store.class<\/name>\n  <value>org.apache.gora.cassandra.store.CassandraStore<\/value>/;ty;P;D;:y}}' $NUTCH_ROOT/conf/nutch-default.xml
+# RUN sed -i '/^  <name>http.agent.name<\/name>$/{$!{N;s/^  <name>http.agent.name<\/name>\n  <value><\/value>$/  <name>http.agent.name<\/name>\n  <value>iData Bot<\/value>/;ty;P;D;:y}}' $NUTCH_ROOT/conf/nutch-default.xml
 
 RUN vim -c 'g/name="gora-cassandra"/+1d' -c 'x' $NUTCH_ROOT/ivy/ivy.xml
 RUN vim -c 'g/name="gora-cassandra"/-1d' -c 'x' $NUTCH_ROOT/ivy/ivy.xml
@@ -49,9 +35,11 @@ RUN vim -c '%s/item.failed()/item.isFailed()/g' -c 'x' $NUTCH_ROOT/src/java/org/
 
 RUN cassandra_env="$CASSANDRA_NODE_NAME"_PORT_9160_TCP_ADDR
 RUN cassandra_ip=$(printenv $cassandra_env)
-RUN echo "gora.datastore.default=org.apache.gora.cassandra.store.CassandraStore" >> $NUTCH_ROOT/conf/gora.properties
-RUN echo "gora.cassandrastore.servers=$cassandra_ip:9160" >> $NUTCH_ROOT/conf/gora.properties
 
+RUN echo gora.datastore.default=org.apache.gora.cassandra.store.CassandraStore >> $NUTCH_ROOT/conf/gora.properties
+RUN echo gora.cassandrastore.servers=127.0.0.1:9160 >> $NUTCH_ROOT/conf/gora.properties
+
+ADD config/nutch-site.xml $NUTCH_ROOT/conf/nutch-site.xml
 
 RUN cd $NUTCH_ROOT && ant runtime
 
