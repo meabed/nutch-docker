@@ -32,19 +32,22 @@ RUN vim -c 'g/name="gora-cassandra"/-1d' -c 'x' $NUTCH_ROOT/ivy/ivy.xml
 RUN vim -c '%s/name="elasticsearch" rev=.*/name="elasticsearch" rev="1.3.2"/g' -c 'x' $NUTCH_ROOT/ivy/ivy.xml
 RUN vim -c '%s/item.failed()/item.isFailed()/g' -c 'x' $NUTCH_ROOT/src/java/org/apache/nutch/indexer/elastic/ElasticWriter.java
 
-
-RUN cassandra_env="$CASSANDRA_NODE_NAME"_PORT_9160_TCP_ADDR
-RUN cassandra_ip=$(printenv $cassandra_env)
-
-RUN echo gora.datastore.default=org.apache.gora.cassandra.store.CassandraStore >> $NUTCH_ROOT/conf/gora.properties
-
-ADD config/nutch-site.xml $NUTCH_ROOT/conf/nutch-site.xml
-
 RUN cd $NUTCH_ROOT && ant runtime
 
 RUN ln -s /opt/apache-nutch-$NUTCH_VERSION/runtime/local /opt/nutch
 
 ENV NUTCH_HOME /opt/nutch
+
+#native libs
+RUN rm  $NUTCH_HOME/lib/native/*
+RUN curl -Ls http://dl.bintray.com/meabed/hadoop-debian/hadoop-native-64-2.5.1.tar|tar -x -C $NUTCH_HOME/lib/native/
+
+
+
+
+RUN rm $NUTCH_HOME/conf/nutch-site.xml
+
+COPY config/nutch-site.xml $NUTCH_HOME/conf/nutch-site.xml
 
 RUN sed  -i '/^SOLRURL=".*/ s/.*/#&\nESNODE="$3"/' $NUTCH_HOME/bin/crawl
 

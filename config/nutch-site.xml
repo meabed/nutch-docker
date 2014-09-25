@@ -28,9 +28,12 @@
         <value>mo.meabed@gmail.com</value>
     </property>
     <property>
+        <name>http.content.limit</name>
+        <value>1000000</value>
+    </property>
+    <property>
         <name>storage.data.store.class</name>
         <value>org.apache.gora.cassandra.store.CassandraStore</value>
         <description>Default class for storing data</description>
     </property>
-
 </configuration>
