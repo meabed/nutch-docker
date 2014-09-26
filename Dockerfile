@@ -63,6 +63,8 @@ RUN vim -c '%s/<solrURL>/<esNODE>/' -c 'x' $NUTCH_HOME/bin/crawl
 
 RUN mkdir $NUTCH_HOME/urls
 
+ENV NUTCHSERVER_PORT 8899
+
 #RUN cd $NUTCH_HOME && ls -al
 
 #RUN mkdir -p /opt/nutch/urls && cd /opt/crawl
@@ -75,6 +77,6 @@ VOLUME ["/data"]
 
 CMD ["/etc/bootstrap.sh", "-d"]
 
-
+EXPOSE 8899
 
 
