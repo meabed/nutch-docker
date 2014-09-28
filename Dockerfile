@@ -34,21 +34,35 @@ RUN vim -c '%s/item.failed()/item.isFailed()/g' -c 'x' $NUTCH_ROOT/src/java/org/
 
 RUN cd $NUTCH_ROOT && ant runtime
 
+#native libs
+RUN rm  $NUTCH_ROOT/lib/native/*
+RUN curl -Ls http://dl.bintray.com/meabed/hadoop-debian/hadoop-native-64-2.5.1.tar|tar -x -C $NUTCH_ROOT/lib/native/
+
+
+#Modification and compilation again
+
+ADD plugin/index-more/src/java/org/apache/nutch/indexer/more/MoreIndexingFilter.java $NUTCH_ROOT/src/plugin/index-more/src/java/org/apache/nutch/indexer/more/MoreIndexingFilter.java
+
+RUN cd $NUTCH_ROOT && ant runtime
+
 RUN ln -s /opt/apache-nutch-$NUTCH_VERSION/runtime/local /opt/nutch
 
 ENV NUTCH_HOME /opt/nutch
 
-#native libs
-RUN rm  $NUTCH_HOME/lib/native/*
-RUN curl -Ls http://dl.bintray.com/meabed/hadoop-debian/hadoop-native-64-2.5.1.tar|tar -x -C $NUTCH_HOME/lib/native/
+# urls folder we will use in crawling $NUTCH_HOME/bin/crawl urls crawlId(test01) elasticsearch_node_name(iData) iteration(1)
+RUN mkdir $NUTCH_HOME/urls
+# Adding test urls to use in crawling
+CMD mkdir -p $NUTCH_HOME/testUrls
+ADD testUrls $NUTCH_HOME/testUrls
 
+# Adding rawcontent that hold html of the page field in index to elasticsearch
+RUN sed  -i '/field name="date" type.*/ s/.*/&\n\n        <field name="rawcontent" type="string" stored="true" indexed="true"\/>\n/' $NUTCH_HOME/conf/schema.xml
 
-
-
+# remove nutche-site.xml default file to replace it by our configuration
 RUN rm $NUTCH_HOME/conf/nutch-site.xml
+ADD config/nutch-site.xml $NUTCH_HOME/conf/nutch-site.xml
 
-COPY config/nutch-site.xml $NUTCH_HOME/conf/nutch-site.xml
-
+# Changes to the crawl script to support Elasticsearch index instead of SOLR
 RUN sed  -i '/^SOLRURL=".*/ s/.*/#&\nESNODE="$3"/' $NUTCH_HOME/bin/crawl
 
 RUN sed  -i '/^if \[ "$SOLRURL".*/ s/.*/if \[ "$ESNODE" = "" \]; then\n    echo "Missing Elasticsearch Node Name : crawl <seedDir> <crawlID> <esNODE> <numberOfRounds>"\n    exit -1;\nfi\n\n\n&/' $NUTCH_HOME/bin/crawl
@@ -60,9 +74,7 @@ RUN vim -c 'g/"$SOLRURL" =/-1,+4d' -c 'x' $NUTCH_HOME/bin/crawl
 RUN vim -c 'g/on SOLR index /-1,+2d' -c 'x' $NUTCH_HOME/bin/crawl
 RUN vim -c '%s/<solrURL>/<esNODE>/' -c 'x' $NUTCH_HOME/bin/crawl
 
-
-RUN mkdir $NUTCH_HOME/urls
-
+# Port that nutchserver will use
 ENV NUTCHSERVER_PORT 8899
 
 #RUN cd $NUTCH_HOME && ls -al
@@ -78,5 +90,3 @@ VOLUME ["/data"]
 CMD ["/etc/bootstrap.sh", "-d"]
 
 EXPOSE 8899
-
-

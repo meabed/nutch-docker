@@ -5,15 +5,15 @@
 
     <property>
         <name>http.agent.name</name>
-        <value>iData Bot</value>
+        <value>Mozilla/5.0</value>
     </property>
     <property>
         <name>http.robots.agents</name>
-        <value>iData Bot,*</value>
+        <value>Mozilla/5.0,*</value>
     </property>
     <property>
         <name>http.agent.description</name>
-        <value>iData Bot</value>
+        <value>Mozilla/5</value>
     </property>
     <property>
         <name>http.agent.version</name>
@@ -38,7 +38,7 @@
     </property>
     <property>
         <name>fetcher.server.delay</name>
-        <value>3.0</value>
+        <value>2.0</value>
         <description>The number of seconds the fetcher will delay between
             successive requests to the same server.
         </description>
@@ -46,7 +46,7 @@
 
     <property>
         <name>plugin.includes</name>
-        <value>protocol-http|urlfilter-regex|parse-(html|tika)|index-(basic|anchor)|urlnormalizer-(pass|regex|basic)|scoring-opic|protocol-httpclient</value>
+        <value>protocol-http|urlfilter-regex|parse-(html|tika)|index-(basic|anchor|more)|urlnormalizer-(pass|regex|basic)|scoring-opic|protocol-httpclient|language-identifier</value>
         <description>Regular expression naming plugin directory names to
             include. Any plugin not matching this expression is excluded.
             In any case you need at least include the nutch-extensionpoints plugin. By
