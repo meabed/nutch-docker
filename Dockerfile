@@ -41,7 +41,7 @@ RUN curl -Ls http://dl.bintray.com/meabed/hadoop-debian/hadoop-native-64-2.5.1.t
 
 #Modification and compilation again
 
-ADD plugin/ $NUTCH_ROOT/src/plugin/
+ADD plugin/nutch2-index-html/src/plugin/ $NUTCH_ROOT/src/plugin/
 RUN sed  -i '/dir="index-more" target="deploy".*/ s/.*/&\n     <ant dir="index-html" target="deploy"\/>/' $NUTCH_ROOT/src/plugin/build.xml
 RUN sed  -i '/dir="index-more" target="clean".*/ s/.*/&\n     <ant dir="index-html" target="clean"\/>/' $NUTCH_ROOT/src/plugin/build.xml
 
