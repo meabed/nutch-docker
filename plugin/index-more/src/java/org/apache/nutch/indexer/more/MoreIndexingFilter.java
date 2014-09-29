@@ -15,8 +15,11 @@
  * limitations under the License.
  */
 package org.apache.nutch.indexer.more;
+import java.util.Scanner;
 
 import java.nio.ByteBuffer;
+import java.io.ByteArrayInputStream;
+
 import java.text.ParseException;
 import java.util.Collection;
 import java.util.Date;
@@ -86,9 +89,17 @@ public class MoreIndexingFilter implements IndexingFilter {
     }
 
     private NutchDocument addRawContent(NutchDocument doc, WebPage page, String url) {
-        ByteBuffer bb = page.getContent();
-        if (bb != null) {
-            doc.add("rawcontent", new String(bb.array()));
+
+        ByteBuffer raw = page.getContent();
+        if (raw != null) {
+            ByteArrayInputStream arrayInputStream = new ByteArrayInputStream(raw.array(), raw.arrayOffset() + raw.position(),raw.remaining());
+            Scanner scanner = new Scanner(arrayInputStream);
+            scanner.useDelimiter("\\Z");//To read all scanner content in one String
+            String data = "";
+            if (scanner.hasNext()){
+                  data = scanner.next();
+            }
+            doc.add("rawcontent", data);
         }
         return doc;
     }

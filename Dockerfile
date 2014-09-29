@@ -56,7 +56,7 @@ CMD mkdir -p $NUTCH_HOME/testUrls
 ADD testUrls $NUTCH_HOME/testUrls
 
 # Adding rawcontent that hold html of the page field in index to elasticsearch
-RUN sed  -i '/field name="date" type.*/ s/.*/&\n\n        <field name="rawcontent" type="string" stored="true" indexed="true"\/>\n/' $NUTCH_HOME/conf/schema.xml
+RUN sed  -i '/field name="date" type.*/ s/.*/&\n\n        <field name="rawcontent" type="text" sstored="true" indexed="true" multiValued="false"\/>\n/' $NUTCH_HOME/conf/schema.xml
 
 # remove nutche-site.xml default file to replace it by our configuration
 RUN rm $NUTCH_HOME/conf/nutch-site.xml
