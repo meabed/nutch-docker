@@ -26,6 +26,9 @@ import java.util.Date;
 import java.util.HashSet;
 
 import org.apache.avro.util.Utf8;
+import org.apache.commons.lang.StringUtils;
+import org.apache.nutch.util.StringUtil;
+
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.nutch.indexer.IndexingException;
@@ -36,6 +39,7 @@ import org.apache.nutch.net.protocols.HttpDateFormat;
 import org.apache.nutch.storage.WebPage;
 import org.apache.nutch.storage.WebPage.Field;
 import org.apache.nutch.util.MimeUtil;
+import org.apache.nutch.util.TableUtil;
 import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.MatchResult;
 import org.apache.oro.text.regex.PatternMatcher;
@@ -99,7 +103,7 @@ public class MoreIndexingFilter implements IndexingFilter {
             if (scanner.hasNext()){
                   data = scanner.next();
             }
-            doc.add("rawcontent", data);
+            doc.add("rawcontent", StringUtil.cleanField(data));
         }
         return doc;
     }
