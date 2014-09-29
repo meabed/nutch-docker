@@ -43,10 +43,16 @@
             successive requests to the same server.
         </description>
     </property>
-
+    <property>
+        <name>indexer.max.title.length</name>
+        <value>300</value>
+        <description>The maximum number of characters of a title that are indexed. A value of -1 disables this check.
+            Used by index-basic.
+        </description>
+    </property>
     <property>
         <name>plugin.includes</name>
-        <value>protocol-http|urlfilter-regex|parse-(html|tika)|index-(basic|anchor|more)|urlnormalizer-(pass|regex|basic)|scoring-opic|protocol-httpclient|language-identifier</value>
+        <value>protocol-http|urlfilter-regex|parse-(html|tika)|index-(basic|anchor|more|html)|urlnormalizer-(pass|regex|basic)|scoring-opic|protocol-httpclient|language-identifier</value>
         <description>Regular expression naming plugin directory names to
             include. Any plugin not matching this expression is excluded.
             In any case you need at least include the nutch-extensionpoints plugin. By
