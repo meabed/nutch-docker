@@ -36,7 +36,8 @@ RUN cd $NUTCH_ROOT && ant runtime
 
 #native libs
 RUN rm  $NUTCH_ROOT/lib/native/*
-RUN curl -Ls http://dl.bintray.com/meabed/hadoop-debian/hadoop-native-64-2.5.1.tar|tar -x -C $NUTCH_ROOT/lib/native/
+#RUN mkdir -p $NUTCH_ROOT/lib/native/Linux-amd64-64
+#RUN curl -Ls http://dl.bintray.com/meabed/hadoop-debian/hadoop-native-64-2.5.1.tar|tar -x -C $NUTCH_ROOT/lib/native/Linux-amd64-64/
 
 
 #Modification and compilation again
