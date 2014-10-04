@@ -18,6 +18,8 @@ nutchserver_port=$(printenv NUTCHSERVER_PORT)
 
 $NUTCH_HOME/bin/nutch nutchserver $nutchserver_port
 
+echo "export PATH=$PATH" >> /etc/env_profile
+
 if [[ $1 == "-d" ]]; then
     while true; do
         sleep 1000;
