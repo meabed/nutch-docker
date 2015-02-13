@@ -17,7 +17,7 @@ RUN apt-get install -y ant
 
 #Download nutch
 
-RUN mkdir -p /opt/downloads && cd /opt/downloads && curl -SsfLO "http://ftp-stud.hs-esslingen.de/pub/Mirrors/ftp.apache.org/dist/nutch/2.2.1/apache-nutch-$NUTCH_VERSION-src.tar.gz"
+RUN mkdir -p /opt/downloads && cd /opt/downloads && curl -SsfLO "http://ftp-stud.hs-esslingen.de/pub/Mirrors/ftp.apache.org/dist/nutch/$NUTCH_VERSION/apache-nutch-$NUTCH_VERSION-src.tar.gz"
 RUN cd /opt && tar xvfz /opt/downloads/apache-nutch-$NUTCH_VERSION-src.tar.gz
 #WORKDIR /opt/apache-nutch-$NUTCH_VERSION
 ENV NUTCH_ROOT /opt/apache-nutch-$NUTCH_VERSION
